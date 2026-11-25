@@ -81,13 +81,18 @@ def validate(text: str) -> None:
         )
 
 
+def resolve_output_path() -> str:
+    """Return the entry.txt path, creating the output directory."""
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
+    os.makedirs(out_dir, exist_ok=True)
+    return os.path.join(out_dir, "entry.txt")
+
+
 def main() -> int:
     text = build_entry()
     validate(text)
 
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
-    os.makedirs(out_dir, exist_ok=True)
-    out_path = os.path.join(out_dir, "entry.txt")
+    out_path = resolve_output_path()
 
     with open(out_path, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(text)
